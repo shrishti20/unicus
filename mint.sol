@@ -1200,19 +1200,7 @@ function getNFTMintedByUser(address user) external view returns (uint256[] memor
 
         return _tokenURI;
     }
-    // update uri of a token
-    function UpdateTokenURI(uint256 tokenId, string memory _TokenURI)
-       external isValidId(tokenId)
-    {    require(
-            _exists(tokenId),
-            "ERC721Metadata: URI set of nonexistent token"
-        );
-         require(
-            ownerOf(tokenId) == msg.sender,
-            "NFT_Minter: Only Owner Can update a NFT"
-        );
-        _setTokenURI(tokenId,_TokenURI);
-    }
+    
     // modifier to check id tokenid exists or not
     modifier isValidId( uint256 nftId){
       require(nftId <= _tokenIdTracker.current());
