@@ -1544,7 +1544,6 @@ contract NFTAuction is ReentrancyGuard, Ownable {
     uint256 auctionId
     ) public payable isValidId(auctionId) nonReentrant {
     require( block.timestamp < (idToAuction[auctionId].startTime)+(idToAuction[auctionId].duration) ,"Duartion Exceeded");
-      require (idToAuction[auctionId].startTime <= block.timestamp,"Auction has not begun");
       require(msg.sender!= idToAuction[auctionId].seller,"seller cannot place bid");
     require( idToAuction[auctionId].isActive == true,"Auction ended");
     if(idToAuction[auctionId].amount == 0){
