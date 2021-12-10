@@ -1563,7 +1563,7 @@ contract NFTAuction is ReentrancyGuard, Ownable {
   //function to end auction
   
   function endAuction(uint256 auctionId) public isValidId(auctionId) {
-      require(msg.sender == idToAuction[auctionId].seller || msg.sender == address(this),"Caller has no rights");
+      require(msg.sender == idToAuction[auctionId].seller || msg.sender == address(this) || idToAuction[auctionId].bidder ,"Caller has no rights");
       require ((idToAuction[auctionId].startTime).add(idToAuction[auctionId].duration) <= block.timestamp,"Auction is still live");
       require( idToAuction[auctionId].isActive= true,"Auction is not active");
        idToAuction[auctionId].isActive= false;
