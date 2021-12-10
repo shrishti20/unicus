@@ -1568,35 +1568,32 @@ contract NFTAuction is ReentrancyGuard, Ownable {
       require ((idToAuction[auctionId].startTime).add(idToAuction[auctionId].duration) <= block.timestamp,"Auction is still live");
       require( idToAuction[auctionId].isActive= true,"Auction is not active");
        idToAuction[auctionId].isActive= false;
-    
+       IERC721(idToAuction[auctionId].nftContract).approve(
+           0x0000000000000000000000000000000000000000, idToAuction[auctionId].tokenId);
        if(idToAuction[auctionId].amount==0)
        {
-           idToAuction[auctionId].sold = false;
-            IERC721(idToAuction[auctionId].nftContract).approve(
-           0x0000000000000000000000000000000000000000, idToAuction[auctionId].tokenId);
+           idToAuction[auctionId].sold = false;   
            IERC721(idToAuction[auctionId].nftContract).safeTransferFrom(address(this),
            idToAuction[auctionId].seller, idToAuction[auctionId].tokenId);
-           _auctionsInActive.increment();
+          
        }
        
        else{
             idToAuction[auctionId].sold = true;
-             IERC721(idToAuction[auctionId].nftContract).approve(
-           0x0000000000000000000000000000000000000000, idToAuction[auctionId].tokenId);
             IERC721(idToAuction[auctionId].nftContract).safeTransferFrom(address(this),idToAuction[auctionId].bidder,
             idToAuction[auctionId].tokenId);
             transferFunds(auctionId);
             _auctionsSold.increment();
-             _auctionsInActive.increment();
+        
        }
-       
+        _auctionsInActive.increment();
        emit AuctionEnded(auctionId);
       
   }
 
 
   function claimNft(uint256 auctionId) public isValidId(auctionId){
-    require ((idToAuction[auctionId].startTime).add(idToAuction[auctionId].duration) <= block.timestamp,"Auction is still live");
+    require ((idToAuction[auctionId].startTime).add(idToAuction[auctionId].duration) <= block.timestamp,"Auction is still live, claim when its over ");
     require(msg.sender == idToAuction[auctionId].bidder, "Only the highest bidder can call");
     endAuction(auctionId); 
     emit NftClaimed(auctionId);
