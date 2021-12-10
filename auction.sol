@@ -1482,6 +1482,10 @@ contract NFTAuction is ReentrancyGuard, Ownable {
   function getReservePrice(uint256 auctionid) public isValidId(auctionid) view returns (uint256) {
     return idToAuction[auctionid].reservePrice;
   }
+
+   function setTreasury(address _treasury) external onlyOwner {
+    treasury = payable(_treasury);
+  }
   
    
   
@@ -1665,7 +1669,9 @@ contract NFTAuction is ReentrancyGuard, Ownable {
     return auctions;
   }
  
- 
+  function setTreasuryRoyalty(uint256 royalty) external onlyOwner {
+   treasuryRoyalty = royalty;
+  }
   
   //transfers funds to seller and the minter gets royalty
  function transferFunds(uint256 auctionId) private isValidId(auctionId) {
