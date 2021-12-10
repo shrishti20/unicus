@@ -1,7 +1,7 @@
 
 
 // SPDX-License-Identifier: MIT 
-pragma solidity ^0.8.3;
+pragma solidity 0.8.9;
 
 interface IERC165 {
     /**
@@ -445,7 +445,7 @@ abstract contract Context {
         return msg.data;
     }
 }
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev String operations.
@@ -1491,6 +1491,10 @@ contract NFTMarket is ReentrancyGuard, Ownable{
 
    function setTreasuryRoyalty(uint256 royalty) external onlyOwner {
    treasuryRoyalty = royalty;
+  }
+
+  function setTreasury(address _treasury) external onlyOwner {
+    treasury = payable(_treasury);
   }
   
   /* Places an item for sale on the marketplace */
