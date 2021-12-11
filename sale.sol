@@ -1424,7 +1424,7 @@ function getNFTMintedByUser(address user) external view returns (uint256[] memor
 
 // NFT SALE CONTRACT 
 
-contract NFTMarket is ReentrancyGuard, Ownable{
+contract NFTMarket is IERC721Receiver, ReentrancyGuard, Ownable{
   using Counters for Counters.Counter; 
   using SafeMath for uint;
   Counters.Counter private _itemIds;     //count of sale items
@@ -1497,6 +1497,10 @@ contract NFTMarket is ReentrancyGuard, Ownable{
     treasury = payable(_treasury);
   }
   
+   function onERC721Received(address, address, uint256, bytes memory) public virtual override returns (bytes4) {
+        return this.onERC721Received.selector;
+    }
+    
   /* Places an item for sale on the marketplace */
   function createSale(
     address nftContract,
