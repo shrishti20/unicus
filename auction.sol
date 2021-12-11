@@ -14,10 +14,6 @@ interface IERC165 {
 }
 
 
-
-
-// import "../../utils/introspection/IERC165.sol";
-
 /**
  * @dev Required interface of an ERC721 compliant contract.
  */
@@ -184,7 +180,6 @@ interface IERC721Receiver {
 
 
 
-// import "../IERC721.sol";
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
@@ -508,8 +503,6 @@ library Strings {
     }
 }
 
-
-// import "./IERC165.sol";
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -1422,7 +1415,7 @@ library SafeMath {
 }
 
 // contract to list NFTs for Auction
-contract NFTAuction is ReentrancyGuard, Ownable {
+contract NFTAuction is IERC721Receiver ,  ReentrancyGuard, Ownable {
   using Counters for Counters.Counter;
   using SafeMath for uint;
   Counters.Counter public _auctionIds;  // count of auctions listed
@@ -1487,7 +1480,9 @@ contract NFTAuction is ReentrancyGuard, Ownable {
     treasury = payable(_treasury);
   }
   
-   
+   function onERC721Received(address, address, uint256, bytes memory) public virtual override returns (bytes4) {
+        return this.onERC721Received.selector;
+    }
   
   /* Places an auction for sale on the marketplace */
   function createAuction(
